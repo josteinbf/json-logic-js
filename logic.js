@@ -11,7 +11,7 @@ if (!Array.isArray) {
 global.jsonLogic = function(tests, data){
 	//You've recursed to a primitive, stop!
 	if(tests === null || typeof tests !== "object" || Array.isArray(tests) ){
-		return tests; 
+		return tests;
 	}
 
 	data = data || {};
@@ -28,12 +28,12 @@ global.jsonLogic = function(tests, data){
 			"<"   : function(a,b,c){
 				return (c === undefined) ?  a < b : (a < b) && (b < c);
 			},
-			"<="  : function(a,b,c){ 
+			"<="  : function(a,b,c){
 				return (c === undefined) ?  a <= b : (a <= b) && (b <= c);
 			},
 			"!"   : function(a){ return !a; },
 			"%"  : function(a,b){ return a % b; },
-			"and" : function(){ 
+			"and" : function(){
 				return Array.prototype.reduce.call(arguments, function(a,b){ return a && b; });
 			},
 			"or"  : function(){
@@ -41,29 +41,29 @@ global.jsonLogic = function(tests, data){
 			},
 			"?:"  : function(a,b,c){ return a ? b : c; },
 			"log" : function(a){ console.log(a); return a; },
-			"in"  : function(a, b){ 
+			"in"  : function(a, b){
 				if(typeof b.indexOf === 'undefined') return false;
 				return (b.indexOf(a) !== -1);
 			},
-			"var" : function(a, not_found){ 
+			"var" : function(a, not_found){
 				if(not_found === undefined) not_found = null;
 				var sub_props = String(a).split(".");
 				for(var i = 0 ; i < sub_props.length ; i++){
 					//Descending into data
 					data = data[ sub_props[i] ];
-					if(data === undefined){ return not_found; } 
+					if(data === undefined){ return not_found; }
 				}
 				return data;
 			},
 			"cat" : function(){
 				return Array.prototype.join.call(arguments, "");
 			},
-			"+" : function(){ 
+			"+" : function(){
 				return Array.prototype.reduce.call(arguments, function(a,b){
 					return parseFloat(a,10) + parseFloat(b, 10);
 				});
 			},
-			"*" : function(){ 
+			"*" : function(){
 				return Array.prototype.reduce.call(arguments, function(a,b){
 					return parseFloat(a,10) * parseFloat(b, 10);
 				});
@@ -79,7 +79,7 @@ global.jsonLogic = function(tests, data){
 	}
 
 	//easy syntax for unary operators, like {"var" : "x"} instead of strict {"var" : ["x"]}
-	if(!Array.isArray(values)){ values = [values]; } 
+	if(!Array.isArray(values)){ values = [values]; }
 
 	//Recursion!
 	values = values.map(function(val){ return jsonLogic(val, data); });
@@ -88,4 +88,3 @@ global.jsonLogic = function(tests, data){
 };
 
 }(this));
-
